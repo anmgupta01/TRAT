@@ -1,0 +1,24 @@
+table {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-width: 500px;
+}
+
+th.mat-header-cell {
+    text-align: left;
+    max-width: 300px;
+}
+
+.mat-row:hover .mat-cell {
+    background-color: #84BD21;
+}
+
+td {
+    border-top: 1px solid grey;
+}
+
+.margin-all {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}

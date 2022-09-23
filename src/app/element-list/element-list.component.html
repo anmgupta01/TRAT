@@ -1,0 +1,57 @@
+
+    <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="Name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="name">{{model.name}} </th>
+            <td mat-cell *matCellDef="let element;"> 
+                <mat-label *ngIf="!element.isSelected"  > {{element.name}}</mat-label>
+                <input matInput *ngIf="element.isSelected"  class="updateCancel name-input" [(ngModel)]="element.name"  >
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="Edit">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>  </th>
+            <td mat-cell *matCellDef="let element;">
+                <a *ngIf="!element.isSelected;"   class="edit" (click)="editData('Edit',element)" >Edit</a> 
+                <a   *ngIf="element.isSelected;" class="updateCancel" (click)="editData('Update',element)" >Update</a> &nbsp;
+                <a  *ngIf="element.isSelected;"   class="updateCancel" (click)="editData('Cancel',element)" >Cancel</a> 
+             </td>
+        </ng-container>
+        <ng-container matColumnDef="Disable">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>  </th>
+            <td mat-cell *matCellDef="let element;"  class="action-link"> 
+                 <a class="disable" (click)="deleteData(element)">Disable</a> 
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+                Loading data...
+            </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+                No data.
+            </mat-footer-cell>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef=" displayedColumns; sticky: true "></tr>
+        <tr mat-row *matRowDef="let row; let element;columns: displayedColumns;"
+         ></tr>
+       
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter</td>
+        </tr>
+
+        <mat-footer-row *matFooterRowDef="[ 'loading'] " [ngClass]="{ 'hide':dataSource!=null} "></mat-footer-row>
+        <!-- <mat-footer-row *matFooterRowDef="[ 'noData'] " [ngClass]="{ 'hide':!(dataSource!=null && dataSource.length==0)} "></mat-footer-row> -->
+
+    </table>
+    <br>
+    <div class="row">
+        <mat-label class="col-lg-2"> {{model.name}}</mat-label> &nbsp;  &nbsp;
+        <div class="col-lg-6">
+            <input matInput  #name class="name-input" name="name">  &nbsp;
+            <input type="button" [value]="model.addValue" (click)="addNewData(name.value)">
+        </div>
+    </div>
+    <br>
+    <br>

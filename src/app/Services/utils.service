@@ -1,0 +1,64 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Employee } from '../Models/leave-types';
+import { Sector } from '../Models/sector';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UtilsService {
+  getCurrentUserDetails: Employee;
+  constructor(public http: HttpClient) { }
+
+    editSector(action:any,obj:any){
+        if(action=="Update"){
+        obj.isSelected = false;
+        obj.lastUpdateBy = this.service.getCurrentUserDetails.id;
+        obj.lastUpdateDate = new Date();
+
+        this.service.updateSector(obj).subscribe(data=>{
+        // console.log(data);
+            this.notifyService.showSuccess("Updated successfully","UpdateSector");
+        });
+        }
+        else if(action == "Cancel"){
+        obj.isSelected = false;
+        }
+        else if(action == "Edit"){
+        obj.isSelected = true;
+        }
+    }
+
+  deleteSector(obj:any){
+    obj.deleted = true;
+    obj.lastUpdateBy = this.service.getCurrentUserDetails.id;
+    obj.lastUpdateDate = new Date();
+    this.dialogService.openConfirmDialog("Are you sure to delete this sector?")
+    .afterClosed().subscribe(res =>{
+      if(res){
+          this.service.updateSector(obj).subscribe(data=>{
+            this.dataSource.data.splice(this.dataSource.data.indexOf(obj.id),1);
+            this.dataSource.data = [...this.dataSource.data];
+            this.notifyService.showSuccess("Deleted successfully","DeleteSector");
+          });  
+      }
+    });
+  }
+
+  addNewSector(sectorName:any){
+    this.sector = {};
+    var data1 :any;
+    this.sector.name =sectorName;
+    this.sector.isSelected =false;
+    this.sector.deleted = false;
+    this.service.AddSector(this.sector).subscribe(data=>{
+      this.dataSource.data = [...this.dataSource.data,data];
+      this.notifyService.showSuccess("Added successfully","AddSector");
+    });
+    this.sectorName ="";
+  }
+
+
+
+}

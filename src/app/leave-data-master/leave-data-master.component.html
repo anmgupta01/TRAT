@@ -1,0 +1,13 @@
+<div class="container">
+    <mat-toolbar>
+        <span class="fill-remaining-space"></span>
+        <span >Add Leave Details</span>
+        <span class="fill-remaining-space"></span>
+    </mat-toolbar>
+</div>
+
+<div class="mat-elevation-z8">
+    <div *ngIf="data">
+        <app-element-list [model]="_self" [data]="data"></app-element-list>
+        </div>
+</div>

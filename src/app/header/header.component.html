@@ -1,0 +1,64 @@
+<div class="upper">
+    <div class="row">
+        <div class="col-lg-1">
+            <img src="/assets/deloitteLogo.png" class="img-fluid img-size" alt="Deloitte Logo">
+        </div>
+        <div class="col-lg-8 color-green">
+            <h1><strong>Timesheet & Resource Allocation Tool (TRAT)</strong></h1>
+        </div>
+        <div class="col-lg-3 color-green">
+            <div class="color-green text-right">
+                <h5>Welcome, {{name}}</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+    <div class="container-fluid pm">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://indijvtrat.deloitte.com/TRAT_APP/">Home</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://indijvtrat.deloitte.com/TRAT_APP/ProjectForm.aspx">Create New Project</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://indijvtrat.deloitte.com/TRAT_APP/LogTime.aspx">Log Time</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://indijvtrat.deloitte.com/TRAT_APP/Allocate.aspx">Allocate Resource</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://indijvtrat.deloitte.com/TRAT_APP/Search.aspx">Search</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://indijvtrat.deloitte.com/TRAT_APP/TempReport.aspx">Reports</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://indijvtrat.deloitte.com/TRAT_APP/WorkOrder.aspx">Work Order</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://indijvtrat.deloitte.com/TRAT_APP/EPCC2.aspx">EPCC 2</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://indijvtrat.deloitte.com/TRAT_APP/EPCC3.aspx">EPCC 3</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/Admin']">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/Leave']">Leave</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]={exact:true} [routerLink]="['/Approval']">Approver</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

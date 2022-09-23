@@ -1,0 +1,115 @@
+<div class="search-div">
+    <button mat-raised-button (click)="onCreate()">
+      <mat-icon>add</mat-icon>Raise New Leave Request
+    </button>
+    <mat-form-field class="search-form-field" floatLabel="never">
+        <mat-label>Search</mat-label>
+        <input matInput [(ngModel)]="searchKey" placeholder="Ex. Planned" autocomplete="off" (keyup)="applyFilter($event)" #input matTooltip="For Leave Type, type name of the leave. For Date, enter the date in YYYY-MM-DD format. For Day Type, enter FD for Full Day, FH for First Half and SH for second Half.">
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+</div>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="mainDataSource" matSort>
+
+        <!-- name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Leave Type </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <!-- fromDate Column -->
+        <ng-container matColumnDef="fromDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> From Date </th>
+            <td mat-cell *matCellDef="let element">
+                {{element.fromDate | date}} </td>
+        </ng-container>
+
+        <!-- toDate Column -->
+        <ng-container matColumnDef="toDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> To Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.toDate | date}} </td>
+        </ng-container>
+
+        <!-- leaveCount Column -->
+        <ng-container matColumnDef="leaveCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Leaves </th>
+            <td mat-cell *matCellDef="let element"> {{element.leaveCount}} Days </td>
+        </ng-container>
+
+
+
+        <!-- dayType Column -->
+        <ng-container matColumnDef="dayType">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Day Type </th>
+            <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.dayType == 'FD'">
+                    Full Day
+                </span>
+                <span *ngIf="element.dayType == 'FH'">
+                    First Half
+                </span>
+                <span *ngIf="element.dayType == 'SH'">
+                    Second Half 
+                </span>
+            </td>
+        </ng-container>
+        <!-- totalAbsenceHour Column -->
+        <ng-container matColumnDef="totalAbsenceHour">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Hours </th>
+            <td mat-cell *matCellDef="let element"> {{element.totalAbsenceHour}} </td>
+        </ng-container>
+
+        <!-- approvalStatus Column -->
+        <ng-container matColumnDef="approvalStatus">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.approvalStatus}} </td>
+        </ng-container>
+
+        <!-- reason Column -->
+        <ng-container matColumnDef="reason">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Reason </th>
+            <td mat-cell *matCellDef="let element"> {{element.reason}} </td>
+        </ng-container>
+
+        <!-- actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button matTooltip="Click to Update the details" [disabled]="!element.isChangeable || element.isActive == false" class="iconbutton" color="primary" (click)="UpdateLeaveDetails(element)">
+                    <mat-icon aria-label="Edit">edit</mat-icon>
+                  </button>
+                <button mat-icon-button matTooltip="Click to delete Leave Request" [disabled]="!element.isChangeable || element.isActive == false" class="iconbutton" color="primary" (click)="DeleteLeaveDetails(element.id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+                Loading data...
+            </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+                No data.
+            </mat-footer-cell>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef=" displayedColumns; sticky: true "></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+
+
+
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+
+        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':mainDataSource!=null}"></mat-footer-row>
+        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(mainDataSource!=null && mainDataSource.data.length==0)}"></mat-footer-row>
+    </table>
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[2,5,10,15,20]" showFirstLastButtons>
+    </mat-paginator>
+
+</div>

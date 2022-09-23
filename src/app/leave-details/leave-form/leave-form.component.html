@@ -1,0 +1,109 @@
+<mat-toolbar>
+    <span>{{ registerFormControl['id'].value !=0 ?"Modify Leave Request":"Raise New Leave Request"}}</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1"><mat-icon>clear</mat-icon></button>
+</mat-toolbar>
+<form [formGroup]="service.LeaveDetailForm" autocomplete="off" class="normal-form" (submit)="onSubmit()">
+    <mat-grid-list cols="2" rowHeight="400px">
+        <mat-grid-tile>
+            <div class="controles-container">
+                <!--Hidden Field for ID-->
+                <input type="hidden" formControlName="id">
+                <!--Input Field for Leave Type ID-->
+                <mat-form-field appearance="outline">
+                    <mat-label>Leave Type</mat-label>
+                    <mat-select matNativeControl formControlName="leaveTypeId" (selectionChange)="service.onChangeLeaveType($event.value)">
+                        <mat-option *ngFor="let leaveTypes of service.allLeaveTypes " [value]="leaveTypes.id">
+                            {{leaveTypes.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="myError('leaveTypeId', 'required')">Leave Type is required!</mat-error>
+                </mat-form-field>
+                <!--Input Field for From Date-->
+                <mat-form-field appearance="outline">
+                    <mat-label>From </mat-label>
+                    <input readonly matInput [matDatepicker]="FromDate" [matDatepickerFilter]="myHolidayFilter" [min]="minDate" placeholder="Choose a date" formControlName="fromDate" (dateChange)="GetAbsenceHour()">
+                    <mat-datepicker-toggle matSuffix [for]="FromDate"></mat-datepicker-toggle>
+                    <mat-datepicker #FromDate></mat-datepicker>
+                    <mat-error *ngIf="myError('fromDate', 'required')">Start Date is required!</mat-error>
+                </mat-form-field>
+                <!--Input Field for To Date-->
+                <mat-form-field appearance="outline">
+                    <mat-label>To </mat-label>
+                    <input matInput readonly [matDatepicker]="ToDate" [matDatepickerFilter]="myHolidayFilter" [min]="minDate" placeholder="Choose a date" formControlName="toDate" (dateChange)="GetAbsenceHour()">
+                    <mat-datepicker-toggle matSuffix [for]="ToDate"></mat-datepicker-toggle>
+                    <mat-datepicker #ToDate></mat-datepicker>
+                    <mat-error *ngIf="myError('toDate', 'required')">End Date is required!</mat-error>
+                    <mat-error *ngIf="myError('toDate', 'dateLessThan')">OOPS! End Date must be greater than or equal to Start Date</mat-error>
+                    <mat-error *ngIf="myError('toDate', 'dateDiffernce')">OOPS! You don't have enough leaves.</mat-error>
+                </mat-form-field>
+                <!--Input Field for Reason -->
+                <mat-form-field appearance="outline">
+                    <mat-label> Reason for Absence</mat-label>
+                    <input type="text" matInput formControlName="reason">
+                    <mat-error *ngIf="myError('reason', 'required')">Reason is required!</mat-error>
+                    <mat-error *ngIf="myError('reason', 'maxlength')">OOPS! Character limit reach. Please Enter 250 characters.</mat-error>
+                </mat-form-field>
+                <!--Input Field for Day Type-->
+                <div class="combo">
+                    <mat-radio-group class="margin-left" formControlName="dayType" (change)="GetAbsenceHour()">
+                        <mat-radio-button value="1">First Half</mat-radio-button>
+                        <mat-radio-button value="2">Second Half</mat-radio-button>
+                        <mat-radio-button checked value="3">Full Day</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="controles-container">
+                <div class="LeavesStatus">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <mat-label>{{service.leaveCredit-service.leaveUsed}} Days</mat-label>
+                                </div>
+                                <div class="row">
+                                    <mat-label>Available</mat-label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <mat-label>{{service.leaveUsed}} Days</mat-label>
+                                </div>
+                                <div class="row">
+                                    <mat-label>Used</mat-label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Input Field for Approver Id-->
+                <mat-form-field appearance="outline">
+                    <mat-label>Approver</mat-label>
+                    <input type="text" matInput [value]="ManagerName" readonly formControlName="approverId">
+                </mat-form-field>
+                <!--Input Field for Absence Hour-->
+                <mat-form-field appearance="outline">
+                    <mat-label>Absence Hours</mat-label>
+                    <input type="number" matInput [value]="TotalAbsenceHour" readonly formControlName="totalAbsenceHour">
+                </mat-form-field>
+                <!--Input Field for File-->
+                <div class="combo">
+                    <label class="btn btn-default p-0 file-margin">
+                            <input type="file" formControlName="fileUpload" (change)="selectFile($event)" />
+                          </label>
+                    <div *ngIf="currentFile" class="progress my-3">
+                        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" attr.aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: progress + '%' }">
+                            {{ progress }}%
+                        </div>
+                    </div>
+                </div>
+                <div class="button-row">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!service.LeaveDetailForm.valid">Submit Leave Request</button>
+                    <button type="button" mat-raised-button color="warn" (click)="onClear() ">Clear</button>
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>
